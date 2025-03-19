@@ -1,6 +1,9 @@
 #ifndef _DISPLAY_H
 #define _DISPLAY_H
 
+// At no point should 0-4 be LOW and 8-15 be HIGH
+// as then the LEDs would be in reverse what they might not be made for 
+
 #include "Arduino.h"
 
 #define DISPLAY_SDI 8
