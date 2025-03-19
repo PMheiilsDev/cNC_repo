@@ -11,6 +11,7 @@
 #define DISPLAY_SRCLK 7
 
 
+/// @brief initialises the display and turns all the pins to 5V so that all LEDs are off 
 void init_display()
 {
 
@@ -23,13 +24,12 @@ void init_display()
     digitalWrite(DISPLAY_SRCLK, LOW);
 
     digitalWrite(DISPLAY_RCLK,LOW);
-    
+
     for( uint8_t i = 0; i < 8; i++ )
     {
         digitalWrite(DISPLAY_SRCLK,LOW);
-        digitalWrite(DISPLAY_SDI,0);
+        digitalWrite(DISPLAY_SDI,1);
         digitalWrite(DISPLAY_SRCLK,HIGH);
-        delay(100);
     }
 
     for( uint8_t i = 8; i < 16; i++ )
@@ -37,11 +37,35 @@ void init_display()
         digitalWrite(DISPLAY_SRCLK,LOW);
         digitalWrite(DISPLAY_SDI,1);
         digitalWrite(DISPLAY_SRCLK,HIGH);
-        delay(100);
     }
 
     digitalWrite(DISPLAY_RCLK,HIGH);
 
+}
+
+void display_send(uint8_t data)
+{
+    // initiate data sending 
+    digitalWrite(DISPLAY_RCLK,LOW);
+
+    // send the data 
+    for( uint8_t i = 0; i < 8; i++ )
+    {
+        digitalWrite(DISPLAY_SRCLK,LOW);
+        digitalWrite(DISPLAY_SDI, ((data>>i)&1)?LOW:HIGH );
+        digitalWrite(DISPLAY_SRCLK,HIGH);
+    }
+
+    // sent the common pins to high so that all leds can be on 
+    for( uint8_t i = 8; i < 16; i++ )
+    {
+        digitalWrite(DISPLAY_SRCLK,LOW);
+        digitalWrite(DISPLAY_SDI,1);
+        digitalWrite(DISPLAY_SRCLK,HIGH);
+    }
+
+    digitalWrite(DISPLAY_RCLK,HIGH);
+    
 }
 
 #endif

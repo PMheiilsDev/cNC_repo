@@ -31,7 +31,11 @@ void setup()
     pinMode(button_1.gpio, INPUT);
     
     init_display();
-    
+
+    delay(1000);
+
+    display_send(0x03);
+
 }
 
 void loop()
