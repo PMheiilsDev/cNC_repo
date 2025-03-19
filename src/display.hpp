@@ -56,11 +56,19 @@ void display_send(uint8_t data, uint8_t num)
         digitalWrite(DISPLAY_SRCLK,HIGH);
     }
 
-    // sent the common pins to high so that all leds can be on 
-    for( uint8_t i = 8; i < 16; i++ )
+    // set the 4 unused pins 
+    for( uint8_t i = 0; i < 4; i++ )
     {
         digitalWrite(DISPLAY_SRCLK,LOW);
-        digitalWrite(DISPLAY_SDI,((num>>i)&1)?LOW:HIGH);
+        digitalWrite(DISPLAY_SDI,LOW);
+        digitalWrite(DISPLAY_SRCLK,HIGH);
+    }
+
+    // sent the common pins to high so that all leds can be on 
+    for( uint8_t i = 0; i < 4; i++ )
+    {
+        digitalWrite(DISPLAY_SRCLK,LOW);
+        digitalWrite(DISPLAY_SDI,((~num>>i)&1)?LOW:HIGH);
         digitalWrite(DISPLAY_SRCLK,HIGH);
     }
 
