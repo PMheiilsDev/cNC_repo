@@ -32,16 +32,16 @@ void setup()
     
     init_display();
 
-    for ( uint8_t j = 0; j < 3; j++ )
+    for ( uint8_t j = 0; j < 4; j++ )
     {
         for ( uint8_t i = 0; i < 8; i++ )
         {
-            delay(1000);
+            delay(100);
 
-            display_send(1<<i);
+            display_send(1<<i, 1<<j);
         }
     }
-    display_send(0);
+    display_send(0x01, 0x00);
 }
 
 void loop()

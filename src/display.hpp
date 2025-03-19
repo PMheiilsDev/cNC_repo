@@ -43,7 +43,7 @@ void init_display()
 
 }
 
-void display_send(uint8_t data)
+void display_send(uint8_t data, uint8_t num)
 {
     // initiate data sending 
     digitalWrite(DISPLAY_RCLK,LOW);
@@ -60,7 +60,7 @@ void display_send(uint8_t data)
     for( uint8_t i = 8; i < 16; i++ )
     {
         digitalWrite(DISPLAY_SRCLK,LOW);
-        digitalWrite(DISPLAY_SDI,1);
+        digitalWrite(DISPLAY_SDI,((num>>i)&1)?LOW:HIGH);
         digitalWrite(DISPLAY_SRCLK,HIGH);
     }
 
