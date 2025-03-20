@@ -27,6 +27,9 @@ extern uint8_t seg_7_numbers[10];
 /// @brief initialises the display and turns all the pins to 5V so that all LEDs are off 
 void init_display();
 
+/// @brief writes a uint to the display removing leading 0s 
+/// @param number 0-9999 as only 4 digits  
+void write_number( uint16_t number );
 
 #endif
 

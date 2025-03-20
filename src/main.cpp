@@ -62,34 +62,7 @@ void loop()
     static uint16_t ctr_debug = 0;
     if( button_task(&button_1) )
     {
-        char buffer[4+1];
-
-        sprintf(buffer, "%04d", ctr_debug);
-
-        int8_t val[4];
-
-        val[0] = buffer[3] - '0';
-        val[1] = buffer[2] - '0';
-        val[2] = buffer[1] - '0';
-        val[3] = buffer[0] - '0';
-    
-        memset( display_data, 0x00, 4 ); 
-
-        bool might_lead = true;
-
-        for ( int8_t i = 3; i >= 0; i-- )
-        {
-            if ( might_lead && ( val[i] == 0 ))
-            {    
-                display_data[i] = 0x00;
-            }
-            else // meaning that it is not a leading 0 
-            {
-                display_data[i] = seg_7_numbers[val[i]];
-                might_lead = false;
-            }
-        }
-
+        write_number(ctr_debug);
         ctr_debug++;
         if (ctr_debug >= 10000) 
             ctr_debug = 0;
