@@ -67,6 +67,8 @@ void button_task(button_t* button)
     {
         fader_1.Ctr = 0;
         fader_1.up = 1;
+
+        display_data[0] = 0b01100000;
     }
 }
 
