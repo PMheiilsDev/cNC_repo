@@ -41,12 +41,6 @@ void setup()
             display_send(1<<i, 1<<j);
         }
     }
-    while(1)
-    {
-        display_send(0b11111100, 0b1000);
-        display_send(0b01100000, 0b0101);
-        delay(100);
-    }
 }
 
 void loop()
