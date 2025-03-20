@@ -37,12 +37,17 @@ void setup()
     pinMode(3, OUTPUT);
     digitalWrite(3,LOW);
 
+    pinMode(A0,INPUT);
+    pinMode(11,OUTPUT);
+
     init_display();
 
 }
 
 void loop()
 {
+    analogWrite(11,(analogRead(A0))>>(2));
+
     if( fader_1.Ctr == 0 ) 
         fader_1.up = 1;
     else if ( fader_1.Ctr == 255 )
