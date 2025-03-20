@@ -59,22 +59,10 @@ void loop()
     analogWrite(6,~fader_1.Ctr);
     delay(10);
 
-    static uint8_t ctr_debug = 0;
+    static uint16_t ctr_debug = 0;
     if( button_task(&button_1) )
     {
         char buffer[4+1];
-
-        sprintf(buffer, "%04d", ctr_debug);
-
-        Serial.println(buffer);
-
-        Serial.println();
-        Serial.println((uint8_t)(buffer[3] - '0'));
-        Serial.println((uint8_t)(buffer[2] - '0'));
-        Serial.println((uint8_t)(buffer[1] - '0'));
-        Serial.println((uint8_t)(buffer[0] - '0'));
-        Serial.println();
-
 
         int8_t val[4];
 
@@ -85,15 +73,18 @@ void loop()
     
         memset( display_data, 0x00, 4 ); 
 
-        for ( uint8_t i = 3; i >= 0; i-- )
-        {
-            display_data[i] = seg_7_numbers[val[i]];
+        bool might_lead = true;
 
-            Serial.println(val[i]);
-            if ( val[i-1] == 0 )
+        for ( int8_t i = 3; i >= 0; i-- )
+        {
+            if ( might_lead && ( val[i] == 0 ))
+            {    
+                display_data[i] = 0x00;
+            }
+            else // meaning that it is not a leading 0 
             {
-                Serial.println(i);
-                break;
+                display_data[i] = seg_7_numbers[val[i]];
+                might_lead = false;
             }
         }
 
