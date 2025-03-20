@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "display.hpp"
-
+#include "imperial_march.hpp"
 
 typedef struct
 {
@@ -61,13 +61,9 @@ void loop()
     analogWrite(6,~fader_1.Ctr);
     delay(10);
 
-    static uint16_t ctr_debug = 0;
     if( button_task(&button_1) )
     {
-        write_number(ctr_debug);
-        ctr_debug++;
-        if (ctr_debug >= 10000) 
-            ctr_debug = 0;
+        start_play();
     }
 
     if( button_task(&button_buzzer) )
