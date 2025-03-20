@@ -4,11 +4,21 @@
 // At no point should 0-4 be LOW and 8-15 be HIGH
 // as then the LEDs would be in reverse what they might not be made for 
 
+#include <inttypes.h>
+
 #include "Arduino.h"
+
+#include "TimerOne.h"
 
 #define DISPLAY_SDI 8
 #define DISPLAY_RCLK 4
 #define DISPLAY_SRCLK 7
+
+#define NUM_AMT 4
+
+uint8_t display_ctr;
+uint8_t display_data[NUM_AMT];
+void display_callback();
 
 
 /// @brief initialises the display and turns all the pins to 5V so that all LEDs are off 
@@ -41,6 +51,11 @@ void init_display()
 
     digitalWrite(DISPLAY_RCLK,HIGH);
 
+    display_ctr = 0;
+    memset( display_data, 0x00, 4 );
+
+    Timer1.initialize(5000);
+    Timer1.attachInterrupt(display_callback);
 }
 
 void display_send(uint8_t data, uint8_t num)
@@ -74,6 +89,14 @@ void display_send(uint8_t data, uint8_t num)
 
     digitalWrite(DISPLAY_RCLK,HIGH);
     
+}
+
+void display_callback()
+{
+    display_send(display_data[display_ctr],1<<display_ctr);
+    display_ctr++;
+    if (display_ctr > NUM_AMT)
+        display_ctr = 0;
 }
 
 #endif
