@@ -47,7 +47,9 @@ void setup()
 
 void loop()
 {
-    analogWrite(11,(analogRead(A0))>>(2));
+    uint16_t adc_res = analogRead(A0);
+    analogWrite(11,~((adc_res>>2)>>5));
+    display_write_number(adc_res);
 
     if( fader_1.Ctr == 0 ) 
         fader_1.up = 1;
