@@ -55,8 +55,10 @@ void loop()
 
     if( button_task(&button_1) )
     {
-        memset(display_data,0x00,4);
-        display_data[rand()%4] = 0b11111100;
+        display_data[0] = rand()&0xFF;
+        display_data[1] = rand()&0xFF;
+        display_data[2] = rand()&0xFF;
+        display_data[3] = rand()&0xFF;
     }
 
     if( button_task(&button_buzzer) )
