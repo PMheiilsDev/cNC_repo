@@ -129,7 +129,7 @@ void write_number( uint16_t number )
 
     bool might_lead = true;
 
-    for ( int8_t i = 3; i >= 0; i-- )
+    for ( int8_t i = 3; i > 0; i-- )
     {
         if ( might_lead && ( val[i] == 0 ))
         {    
@@ -141,5 +141,7 @@ void write_number( uint16_t number )
             might_lead = false;
         }
     }
+    display_data[0] = seg_7_numbers[val[0]];
+
 }
 
