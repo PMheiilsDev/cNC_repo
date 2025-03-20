@@ -65,16 +65,17 @@ void start_play()
 
 void beep(int note, int duration)
 {
-    // Play tone on buzzerPin
-    tone(buzzerPin, note, duration);
-
-    delay(duration);
-
-    noTone(buzzerPin);
-
-    delay(50);
-
-    // Increment counter
+    long period = 1000000 / note; // Calculate the period in microseconds
+    long cycles = (duration * 1000L) / (period * 2); // Calculate the number of cycles
+    
+    for (long i = 0; i < cycles; i++)
+    {
+        digitalWrite(buzzerPin, HIGH);
+        delayMicroseconds(period);
+        digitalWrite(buzzerPin, LOW);
+        delayMicroseconds(period);
+    }
+    delay(50); // Short delay between notes
     counter++;
 }
 
