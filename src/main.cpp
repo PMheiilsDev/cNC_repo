@@ -62,8 +62,41 @@ void loop()
     static uint8_t ctr_debug = 0;
     if( button_task(&button_1) )
     {
-        display_data[0] = seg_7_numbers[ctr_debug];
+        char buffer[4+1];
+
+        sprintf(buffer, "%04d", ctr_debug);
+
+        Serial.println(buffer);
+
+        Serial.println();
+        Serial.println((uint8_t)(buffer[3] - '0'));
+        Serial.println((uint8_t)(buffer[2] - '0'));
+        Serial.println((uint8_t)(buffer[1] - '0'));
+        Serial.println((uint8_t)(buffer[0] - '0'));
+        Serial.println();
+
+
+        int8_t val[4];
+
+        val[0] = buffer[3] - '0';
+        val[1] = buffer[2] - '0';
+        val[2] = buffer[1] - '0';
+        val[3] = buffer[0] - '0';
     
+        memset( display_data, 0x00, 4 ); 
+
+        for ( uint8_t i = 3; i >= 0; i-- )
+        {
+            display_data[i] = seg_7_numbers[val[i]];
+
+            Serial.println(val[i]);
+            if ( val[i-1] == 0 )
+            {
+                Serial.println(i);
+                break;
+            }
+        }
+
         ctr_debug++;
         if (ctr_debug >= 10000) 
             ctr_debug = 0;
