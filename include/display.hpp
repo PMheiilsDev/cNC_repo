@@ -29,7 +29,7 @@ void init_display();
 
 /// @brief writes a uint to the display removing leading 0s 
 /// @param number 0-9999 as only 4 digits  
-void write_number( uint16_t number );
+void display_write_number( uint16_t number );
 
 #endif
 

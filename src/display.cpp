@@ -109,7 +109,7 @@ static void display_callback()
     }
 }
 
-void write_number( uint16_t number )
+void display_write_number( uint16_t number )
 {
     if (number >= 10000) 
         return;
