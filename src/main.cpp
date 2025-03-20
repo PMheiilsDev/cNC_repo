@@ -42,6 +42,7 @@ void setup()
 
     init_display();
 
+    Serial.begin(9600);
 }
 
 void loop()
@@ -60,10 +61,18 @@ void loop()
 
     if( button_task(&button_1) )
     {
-        display_data[0] = rand()&0xFF;
-        display_data[1] = rand()&0xFF;
-        display_data[2] = rand()&0xFF;
-        display_data[3] = rand()&0xFF;
+        static uint8_t ctr_debug = 0;
+        ctr_debug++;
+        if (ctr_debug > 10) 
+            ctr_debug = 0;
+        display_data[0] = seg_7_numbers[ctr_debug];
+        char buffer[16];
+        sprintf(buffer, "%d\n",ctr_debug);
+        Serial.print(buffer);
+        // display_data[0] = rand()&0xFF;
+        // display_data[1] = rand()&0xFF;
+        // display_data[2] = rand()&0xFF;
+        // display_data[3] = rand()&0xFF;
     }
 
     if( button_task(&button_buzzer) )

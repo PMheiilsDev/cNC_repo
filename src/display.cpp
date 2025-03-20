@@ -7,8 +7,29 @@
 uint8_t display_ctr;
 uint8_t display_data[NUM_AMT];
 
+uint8_t seg_7_numbers[10] = 
+{
+    //.GFEDCBA
+    0b01111110,
+    0b00000110,
+    0b01011011,
+    0b01001111,
+    0b01100110,
+    0b01101101,
+    0b01111101,
+    0b00000111,
+    0b01111111,
+    0b01101111
+};
 
-/// @brief initialises the display and turns all the pins to 5V so that all LEDs are off 
+/// @brief sends the date to the display this shold never be used 
+/// @param data each bit is one LED of a segment
+/// @param num the data is displayed on all numbers that are 1 and all that are 0 are turned off  
+static void display_send(uint8_t data, uint8_t num);
+
+/// @brief call back for the interal interrupt that handles all number after each other 
+static void display_callback();
+
 void init_display()
 {
 
