@@ -53,7 +53,12 @@ void loop()
     analogWrite(6,~fader_1.Ctr);
     delay(10);
 
-    button_task(&button_1);
+    if( button_task(&button_1) )
+    {
+        memset(display_data,0x00,4);
+        display_data[rand()%4] = 0b11111100;
+    }
+
     if( button_task(&button_buzzer) )
     {
         for ( uint8_t i = 1; i < 100; i++ )
