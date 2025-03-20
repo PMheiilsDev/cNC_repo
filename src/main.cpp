@@ -74,7 +74,7 @@ void loop()
                 delayMicroseconds(i*10);
             }
         }
-        analogWrite(3,0);
+        digitalWrite(3,LOW);
     }
 }
 
