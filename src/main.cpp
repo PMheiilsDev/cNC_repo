@@ -59,20 +59,14 @@ void loop()
     analogWrite(6,~fader_1.Ctr);
     delay(10);
 
+    static uint8_t ctr_debug = 0;
     if( button_task(&button_1) )
     {
-        static uint8_t ctr_debug = 0;
-        ctr_debug++;
-        if (ctr_debug > 10) 
-            ctr_debug = 0;
         display_data[0] = seg_7_numbers[ctr_debug];
-        char buffer[16];
-        sprintf(buffer, "%d\n",ctr_debug);
-        Serial.print(buffer);
-        // display_data[0] = rand()&0xFF;
-        // display_data[1] = rand()&0xFF;
-        // display_data[2] = rand()&0xFF;
-        // display_data[3] = rand()&0xFF;
+    
+        ctr_debug++;
+        if (ctr_debug >= 10000) 
+            ctr_debug = 0;
     }
 
     if( button_task(&button_buzzer) )
