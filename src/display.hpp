@@ -16,6 +16,9 @@
 
 #define NUM_AMT 4
 
+// note that a frame rate of 25 is not enough as one number will only be on for 1/NUM_AMT of the time so here 1/4 
+#define FRAME_RATE_Hz 100  
+
 uint8_t display_ctr;
 uint8_t display_data[NUM_AMT];
 void display_callback();
@@ -54,7 +57,7 @@ void init_display()
     display_ctr = 0;
     memset( display_data, 0x00, 4 );
 
-    Timer1.initialize(5000);
+    Timer1.initialize(1e6/(FRAME_RATE_Hz*NUM_AMT));
     Timer1.attachInterrupt(display_callback);
 }
 
