@@ -32,15 +32,6 @@ void setup()
     
     init_display();
 
-    for ( uint8_t j = 0; j < 4; j++ )
-    {
-        for ( uint8_t i = 0; i < 8; i++ )
-        {
-            delay(100);
-
-            display_send(1<<i, 1<<j);
-        }
-    }
 }
 
 void loop()
