@@ -9,17 +9,17 @@ uint8_t display_data[NUM_AMT];
 
 uint8_t seg_7_numbers[10] = 
 {
-    //.GFEDCBA
-    0b01111110,
-    0b00000110,
-    0b01011011,
-    0b01001111,
-    0b01100110,
-    0b01101101,
-    0b01111101,
-    0b00000111,
-    0b01111111,
-    0b01101111
+    //ABCDEFG.
+    0b11111100,  
+    0b01100000,  
+    0b11011010,  
+    0b11110010,  
+    0b01100110,  
+    0b10110110,  
+    0b10111110,  
+    0b11100000,  
+    0b11111110,  
+    0b11110110  
 };
 
 /// @brief sends the date to the display this shold never be used 
