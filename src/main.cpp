@@ -64,6 +64,8 @@ void loop()
     {
         char buffer[4+1];
 
+        sprintf(buffer, "%04d", ctr_debug);
+
         int8_t val[4];
 
         val[0] = buffer[3] - '0';
