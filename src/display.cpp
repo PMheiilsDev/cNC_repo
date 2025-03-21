@@ -114,18 +114,15 @@ void display_write_number( uint16_t number )
     if (number >= 10000) 
         return;
 
-    char buffer[4+1];
-
-    sprintf(buffer, "%04d", number);
-
     int8_t val[4];
 
-    val[0] = buffer[3] - '0';
-    val[1] = buffer[2] - '0';
-    val[2] = buffer[1] - '0';
-    val[3] = buffer[0] - '0';
-
-    memset( display_data, 0x00, 4 ); 
+    uint16_t temp_number = number;
+    for( uint8_t i = 0; i < 4; i++ )
+    {
+        val[i] = (temp_number)%10;
+        temp_number -= val[i];
+        temp_number /= 10;
+    }
 
     bool might_lead = true;
 
