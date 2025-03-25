@@ -1,4 +1,11 @@
 #include <Arduino.h>
+
+// #define DEBUG
+#ifdef DEBUG 
+    #include "avr8-stub.h" 
+    #include "app_api.h" 
+#endif
+
 #include "display.hpp"
 #include "imperial_march.hpp"
 
@@ -24,6 +31,10 @@ uint8_t button_task(button_t* button);
 
 void setup()
 {
+    #ifdef DEBUG
+    debug_init();
+    #endif
+
     pinMode(6,OUTPUT);
     fader_1.Ctr = 0;
     fader_1.up = 1;
@@ -42,7 +53,7 @@ void setup()
 
     init_display();
 
-    Serial.begin(9600);
+    //Serial.begin(9600);
 }
 
 void loop()
