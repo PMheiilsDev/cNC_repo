@@ -51,6 +51,9 @@ void setup()
     pinMode(A0,INPUT);
     pinMode(11,OUTPUT);
 
+    pinMode(2,INPUT);
+    pinMode(10,OUTPUT);
+
     init_display();
 
     //Serial.begin(9600);
@@ -58,6 +61,8 @@ void setup()
 
 void loop()
 {
+    digitalWrite(10,digitalRead(2));
+
     uint16_t adc_res = analogRead(A0);
     analogWrite(11,~((adc_res>>2)>>5));
     display_write_number(adc_res);
