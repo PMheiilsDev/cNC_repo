@@ -8,6 +8,7 @@
 
 #include "display.hpp"
 #include "imperial_march.hpp"
+#include "ir_sensor.h"
 
 typedef struct
 {
@@ -35,7 +36,7 @@ void setup()
     debug_init();
     #endif
 
-    pinMode(6,OUTPUT);
+    //pinMode(6,OUTPUT);
     fader_1.Ctr = 0;
     fader_1.up = 1;
 
@@ -49,22 +50,21 @@ void setup()
     digitalWrite(3,LOW);
 
     pinMode(A0,INPUT);
-    pinMode(11,OUTPUT);
-
-    pinMode(2,INPUT);
-    pinMode(10,OUTPUT);
+    //pinMode(11,OUTPUT);
 
     init_display();
 
-    //Serial.begin(9600);
+    init_ir_sensor();
+
+    Serial.begin(9600);
 }
 
 void loop()
 {
-    digitalWrite(10,digitalRead(2));
+    ir_sensor_task();
 
     uint16_t adc_res = analogRead(A0);
-    analogWrite(11,~((adc_res>>2)>>5));
+    // analogWrite(11,~((adc_res>>2)>>5));
     display_write_number(adc_res);
 
     if( fader_1.Ctr == 0 ) 
@@ -74,7 +74,7 @@ void loop()
     
     fader_1.up?fader_1.Ctr++:fader_1.Ctr--;
     
-    analogWrite(6,~fader_1.Ctr);
+    //analogWrite(6,~fader_1.Ctr);
     delay(10);
 
     if( button_task(&button_1) )
@@ -101,6 +101,7 @@ void loop()
 
 uint8_t button_task(button_t* button)
 {
+    return 0;
     button->state_pref = button->state;
     button->state = !digitalRead(button->gpio);
 
