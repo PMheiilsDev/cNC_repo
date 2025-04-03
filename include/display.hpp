@@ -20,6 +20,8 @@
 #define FRAME_RATE_Hz 100  
 
 extern uint8_t display_ctr;
+
+// ABCDEFG.
 extern uint8_t display_data[NUM_AMT];
 
 extern uint8_t seg_7_numbers[10];

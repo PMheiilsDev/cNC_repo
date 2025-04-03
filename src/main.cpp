@@ -35,75 +35,56 @@ void setup()
     debug_init();
     #endif
 
-    pinMode(6,OUTPUT);
-    fader_1.Ctr = 0;
-    fader_1.up = 1;
-
-    button_1.gpio = A1;
-    pinMode(button_1.gpio, INPUT);
-    
-    button_buzzer.gpio = A2;
-    pinMode(button_buzzer.gpio, INPUT);
-
-    pinMode(3, OUTPUT);
-    digitalWrite(3,LOW);
-
-    pinMode(A0,INPUT);
-    pinMode(11,OUTPUT);
-
-    pinMode(2,INPUT);
-    pinMode(10,OUTPUT);
-
     init_display();
+
+    pinMode(A1,INPUT);
 
     //Serial.begin(9600);
 }
 
+uint8_t i = 0;
+
+bool state = 0;
+bool state_pref = 0;
+uint32_t rising_time = 0;
+bool mode = 0;
+uint32_t toggle_time = 0;
+
 void loop()
 {
-    digitalWrite(10,digitalRead(2));
 
-    uint16_t adc_res = analogRead(A0);
-    analogWrite(11,~((adc_res>>2)>>5));
-    display_write_number(adc_res);
-
-    if( fader_1.Ctr == 0 ) 
-        fader_1.up = 1;
-    else if ( fader_1.Ctr == 255 )
-        fader_1.up = 0;
-    
-    fader_1.up?fader_1.Ctr++:fader_1.Ctr--;
-    
-    analogWrite(6,~fader_1.Ctr);
-    delay(10);
-
-    if( button_task(&button_1) )
+    state_pref = state;
+    state = digitalRead(A1);
+    if ( !state && state_pref )
     {
-        start_play();
-    }
-
-    if( button_task(&button_buzzer) )
-    {
-        for ( uint8_t i = 1; i < 100; i++ )
+        rising_time = millis();
+        if( mode )
         {
-            for( uint8_t j = 0; j < 200/i; j++ )
-            {
-                digitalWrite(3, HIGH);
-                delayMicroseconds(i*10);
-            
-                digitalWrite(3, LOW);
-                delayMicroseconds(i*10);
-            }
+            i++;
+            i = i%6;
         }
-        digitalWrite(3,LOW);
     }
-}
+    if ( state && !state_pref )
+    {
+        if ( millis()-rising_time >= 500 )
+            mode = !mode;
+    }
+    if ( !mode )
+    {
+        if ( millis() - toggle_time >= 1000 )
+        {
+            toggle_time = millis();
+            i++;
+            i = i%6;
+        }
+    }
 
-uint8_t button_task(button_t* button)
-{
-    button->state_pref = button->state;
-    button->state = !digitalRead(button->gpio);
+    display_data[0] = (i==0)?(1<<7):(1<<(i+1));
+    
+    display_data[1] = (i==0)?(1<<7):1<<(7-i);
+    display_data[2] = seg_7_numbers[i];
 
-    return( button->state && ! button->state_pref);
+    display_data[3] = seg_7_numbers[mode];
+        
 }
 
