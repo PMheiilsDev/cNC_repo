@@ -39,15 +39,16 @@ void setup()
 
     pinMode(A1,INPUT);
 
-    //Serial.begin(9600);
+    // Serial.begin(9600);
 }
 
 uint8_t i = 0;
 
+bool mode = 1;
+
 bool state = 0;
 bool state_pref = 0;
 uint32_t rising_time = 0;
-bool mode = 0;
 uint32_t toggle_time = 0;
 
 void loop()
@@ -58,16 +59,22 @@ void loop()
     if ( !state && state_pref )
     {
         rising_time = millis();
-        if( mode )
-        {
-            i++;
-            i = i%6;
-        }
     }
     if ( state && !state_pref )
     {
-        if ( millis()-rising_time >= 500 )
+        uint32_t dt = millis() - rising_time;
+        if ( dt < 500 )
+        {
+            if( mode )
+            {
+                i++;
+                i = i%6;
+            }
+        }
+        else if ( dt >= 500 )
+        {
             mode = !mode;
+        }
     }
     if ( !mode )
     {
