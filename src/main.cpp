@@ -64,7 +64,7 @@ void loop()
 
     delayMicroseconds(rand()%20);
     
-
+    static bool turn_on = 1;
     static uint8_t ctr = 0;
 
     // change the values of the pwm handler
@@ -74,19 +74,19 @@ void loop()
 
         start_time_us = time_us;
 
-        pwm_value[ctr]++;
+        if(turn_on)
+            pwm_value[ctr]++;
+        else
+            pwm_value[ctr]--;
 
-        if ( pwm_value[ctr] == FADE_STEPS_AMT)
+        if ( pwm_value[ctr] == FADE_STEPS_AMT|| pwm_value[ctr] == 0 )
         {
             ctr++;
 
             if ( ctr >= LED_AMT )
             {
                 ctr = 0;
-                for ( uint8_t i = 0; i < LED_AMT; i++ )
-                {
-                    pwm_value[i] = 0;
-                }
+                turn_on = !turn_on;
             }
         }
     }
