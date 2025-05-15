@@ -64,6 +64,7 @@ void loop()
 
     delayMicroseconds(rand()%20);
     
+    static bool direction = 1;
     static bool turn_on = 1;
     static uint8_t ctr = 0;
 
@@ -79,13 +80,16 @@ void loop()
         else
             pwm_value[ctr]--;
 
-        if ( pwm_value[ctr] == FADE_STEPS_AMT|| pwm_value[ctr] == 0 )
+        if ( pwm_value[ctr] >= FADE_STEPS_AMT|| pwm_value[ctr] == 0 )
         {
-            ctr++;
+            if ( direction )
+                ctr++;
+            else
+                ctr--;
 
             if ( ctr >= LED_AMT )
             {
-                ctr = 0;
+                direction = !direction;
                 turn_on = !turn_on;
             }
         }
