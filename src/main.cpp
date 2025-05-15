@@ -6,7 +6,7 @@
     #include "app_api.h" 
 #endif
 
-#define LED_AMT 4
+#define LED_AMT 6
 #define PWM_T 2000
 #define FADE_STEPS_AMT 30
 #define FADE_TIME 1000e3
@@ -23,9 +23,9 @@ uint8_t pwm_value[LED_AMT] =
 };
 
 
-uint8_t led_pin[4] = 
+uint8_t led_pin[LED_AMT] = 
 {
-    11,10,5,6
+    6,5,10,11,12,13
 };
 
 
@@ -52,7 +52,7 @@ void loop()
     // for all pwm leds
     for ( uint8_t i = 0; i < LED_AMT; i++ )
     {
-        if( time_us % PWM_T >= (unsigned long) pwm_value[i] * PWM_T /255 )
+        if( time_us % PWM_T >= (unsigned long) pwm_value[i] * PWM_T /FADE_STEPS_AMT )
         {
             digitalWrite(led_pin[i],HIGH);
         }
@@ -65,7 +65,7 @@ void loop()
     delayMicroseconds(rand()%20);
     
 
-    static bool up = 0;
+    static uint8_t ctr = 0;
 
     // change the values of the pwm handler
     if ( (time_us - start_time_us) >= (unsigned long)(FADE_TIME/FADE_STEPS_AMT) )
@@ -74,13 +74,20 @@ void loop()
 
         start_time_us = time_us;
 
-        if ( pwm_value[3] == 255 || pwm_value[3] == 0 )
+        pwm_value[ctr]++;
+
+        if ( pwm_value[ctr] == FADE_STEPS_AMT)
         {
-            up = !up;
+            ctr++;
+
+            if ( ctr >= LED_AMT )
+            {
+                ctr = 0;
+                for ( uint8_t i = 0; i < LED_AMT; i++ )
+                {
+                    pwm_value[i] = 0;
+                }
+            }
         }
-        if ( up )
-            pwm_value[3] ++;
-        else
-            pwm_value[3] --;
     }
 }
