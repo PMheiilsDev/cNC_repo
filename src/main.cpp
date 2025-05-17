@@ -57,7 +57,7 @@ void loop()
         for ( uint8_t j = 0; j < FADE_STEPS_AMT; j++ )
         {
             // alle PWM Zyklen
-            for ( uint16_t k = 0; k < (FADE_TIME/PWM_T/FADE_STEPS_AMT) ; k++ )
+            for ( uint8_t k = 0; k < (FADE_TIME/PWM_T/FADE_STEPS_AMT) ; k++ )
             {
                 // turn LEDs off 
                 digitalWrite(led_pin[i],HIGH);
