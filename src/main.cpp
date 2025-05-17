@@ -62,7 +62,7 @@ void loop()
         }
     }
 
-    delayMicroseconds(rand()%20);
+    // delayMicroseconds(rand()%20);
     
     static bool direction = 1;
     static bool turn_on = 1;
