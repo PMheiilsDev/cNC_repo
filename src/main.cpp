@@ -39,59 +39,35 @@ void setup()
     {
         pinMode(led_pin[i],OUTPUT);
     }
-
+    
     Serial.begin(9600);
 }
 
 void loop()
-{
-    unsigned long time_us = micros();
-    
-    // Serial.println(time_us%PWM_T);
+{   
 
-    // for all pwm leds
+    // turn all LEDs off
+    for ( uint8_t i = 0; i < LED_AMT; i++ )
+        digitalWrite(led_pin[i], HIGH);
+
+    // alle LEDs
     for ( uint8_t i = 0; i < LED_AMT; i++ )
     {
-        if( time_us % PWM_T >= (unsigned long) pwm_value[i] * PWM_T /FADE_STEPS_AMT )
+        // alle Helligkeiten
+        for ( uint8_t j = 0; j < FADE_STEPS_AMT; j++ )
         {
-            digitalWrite(led_pin[i],HIGH);
-        }
-        else
-        {
-            digitalWrite(led_pin[i], LOW);
-        }
-    }
-
-    // delayMicroseconds(rand()%20);
-    
-    static bool direction = 1;
-    static bool turn_on = 1;
-    static uint8_t ctr = 0;
-
-    // change the values of the pwm handler
-    if ( (time_us - start_time_us) >= (unsigned long)(FADE_TIME/FADE_STEPS_AMT) )
-    {
-        // Serial.println(pwm_value[3]);
-
-        start_time_us = time_us;
-
-        if(turn_on)
-            pwm_value[ctr]++;
-        else
-            pwm_value[ctr]--;
-
-        if ( pwm_value[ctr] >= FADE_STEPS_AMT|| pwm_value[ctr] == 0 )
-        {
-            if ( direction )
-                ctr++;
-            else
-                ctr--;
-
-            if ( ctr >= LED_AMT )
+            // alle PWM Zyklen
+            for ( uint16_t k = 0; k < (FADE_TIME/PWM_T/FADE_STEPS_AMT) ; k++ )
             {
-                direction = !direction;
-                turn_on = !turn_on;
+                // turn LEDs off 
+                digitalWrite(led_pin[i],HIGH);
+                delayMicroseconds( PWM_T - (j * (PWM_T/FADE_STEPS_AMT)) );
+                
+                // turn LEDs on 
+                digitalWrite(led_pin[i],LOW);
+                delayMicroseconds( j * (PWM_T/FADE_STEPS_AMT) );
             }
         }
     }
 }
+
