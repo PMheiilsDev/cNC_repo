@@ -9,27 +9,45 @@
 #define ADC_PIN A0 
 #define READ_AMT 20 
 
-uint32_t result = 0;
 
-void setup()
+int main_()
 {
-    #ifdef DEBUG
-    debug_init();
-    #endif
-
-    pinMode(ADC_PIN,INPUT);
-
+    init();
     Serial.begin(9600);
+    // eigener Code
+
+    uint16_t res[60];
+
+    uint32_t last_measure_time = 0;
+
+    uint8_t ctr = 0;
+
+    while(1)
+    {
+        uint32_t now = millis();
+        if ( now - last_measure_time >= (uint32_t)60*1000 )
+        {
+            last_measure_time = now;
+            res[ctr] = analogRead(A0);
+            ctr++;
+            if ( ctr >= 60 )
+            {
+                uint32_t sum = 0;
+                for ( uint8_t i = 0; i < sizeof(res)/sizeof(res[0]); i++ )
+                {
+                    sum += res[i]; 
+                }
+                ctr = 0;
+                Serial.print((double)sum/sizeof(res)*sizeof(res[0])/1023*5e3);
+                Serial.println(" mV");
+            }
+        }
+        
+    }
+
+    // 
 }
 
-void loop()
-{   
-    result = 0;
-    for ( uint8_t i = 0; i < READ_AMT; i++ )
-    {
-        result += analogRead(ADC_PIN);
-    }
-    Serial.println(result/READ_AMT);
-    
-}
+
+void setup(){main_();};
 
